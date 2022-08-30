@@ -1,8 +1,8 @@
 package com.code.top100.easy;
 
+import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Stack;
 
 /**
  * Given a string s containing just the characters '(', ')', '{', '}', '[' and
@@ -41,26 +41,48 @@ import java.util.Stack;
 public class ValidParetheses {
 
   public static void main(String[] args) {
-    String s = "(]";
+    String s = "(){}}{";
+    System.out.println(isValid(s));
   }
 
-  public boolean isValid(String s) {
-    Map<Character, Character> openCloseParanthesesMap = new HashMap<>();
-    openCloseParanthesesMap.put('(', ')');
-    openCloseParanthesesMap.put('{', '}');
-    openCloseParanthesesMap.put('[', ']');
+  public static boolean isValid(String s) {
+    boolean flag = false;
+    
+    ArrayDeque<Character> stack = new ArrayDeque<>();
+    Map<Character, Character> closeOpenmap = new HashMap<>();
+    closeOpenmap.put(')', '(');
+    closeOpenmap.put('}', '{');
+    closeOpenmap.put(']', '[');
 
-    Stack<Character> stack = new Stack<>();
-
+    char ch;
+    char pop_val;
     for (int i = 0; i < s.length(); i++) {
-      char ch = s.charAt(i);
-
-      if (openCloseParanthesesMap.containsKey(ch)) {
-
+      ch = s.charAt(i);
+      if (!closeOpenmap.containsKey(ch)) {
+        // Push the open parentheses
+        stack.push(ch);
+      } else {
+        // Validate closing parentheses
+        if (stack.isEmpty()) {
+          flag = false;
+          break;
+        } else {
+          pop_val = stack.pop();
+          if (closeOpenmap.get(ch) == pop_val) {
+            flag = true;
+            continue;
+          } else {
+            flag = false;
+            break;
+          }
+        }
       }
     }
 
-    return true;
+    if (!stack.isEmpty()) {
+      flag = false;
+    }
+    return flag;
   }
 
   /**
