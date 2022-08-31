@@ -1,2 +1,2 @@
-# code-top100-easy
-code Top 100 easy problems
+# leetcode-top100-easy
+Leet code Top 100 easy problems
